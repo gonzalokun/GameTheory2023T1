@@ -319,19 +319,16 @@ def encontrar_equilibrio_nash():
             for estrategia_C in range(3):
                 es_equilibrio = True
                 
-                # Verificar si la estrategia_A es la mejor respuesta a estrategia_B y estrategia_C
                 for alt_A in range(3):
                     if matriz_costos[alt_A][estrategia_B][estrategia_C][0] >= matriz_costos[estrategia_A][estrategia_B][estrategia_C][0]:
                         es_equilibrio = False
                         break
                 
-                # Verificar si la estrategia_B es la mejor respuesta a estrategia_A y estrategia_C
                 for alt_B in range(3):
                     if matriz_costos[estrategia_A][alt_B][estrategia_C][1] >= matriz_costos[estrategia_A][estrategia_B][estrategia_C][1]:
                         es_equilibrio = False
                         break
                 
-                # Verificar si la estrategia_C es la mejor respuesta a estrategia_A y estrategia_B
                 for alt_C in range(3):
                     if matriz_costos[estrategia_A][estrategia_B][alt_C][2] >= matriz_costos[estrategia_A][estrategia_B][estrategia_C][2]:
                         es_equilibrio = False
@@ -340,7 +337,6 @@ def encontrar_equilibrio_nash():
                 if es_equilibrio:
                     equilibrios_nash.append((estrategia_A, estrategia_B, estrategia_C))
                     
-    # Mostrar los equilibrios de Nash encontrados
     if equilibrios_nash:
         print(f"Se han encontrado los siguientes equilibrios de Nash: {equilibrios_nash}")
     else:
@@ -444,7 +440,6 @@ cargar_mejores_respuestas()
 
 print("Mejores estrategias de A")
 print(mejores_estrategias_A)
-
 
 print("Mejores estrategias de B")
 print(mejores_estrategias_B)
