@@ -6,8 +6,6 @@ jugadores = 3
 
 matriz_costos = [[[0 for _ in range(jugadores)] for _ in range(jugadores)] for _ in range(jugadores)]
 
-# print(matriz_costos)
-
 for matriz in range(3):
     nombre_archivo = "tabla" + str(matriz)
 
@@ -311,3 +309,145 @@ calc_est_dominante_B()
 
 print("JUGADOR C (ESPAÑOL)")
 calc_est_dominante_C()
+
+def encontrar_equilibrio_nash():
+    equilibrios_nash = []
+    
+    # Verificar posibles equilibrios de Nash
+    for estrategia_A in range(3):
+        for estrategia_B in range(3):
+            for estrategia_C in range(3):
+                es_equilibrio = True
+                
+                # Verificar si la estrategia_A es la mejor respuesta a estrategia_B y estrategia_C
+                for alt_A in range(3):
+                    if matriz_costos[alt_A][estrategia_B][estrategia_C][0] >= matriz_costos[estrategia_A][estrategia_B][estrategia_C][0]:
+                        es_equilibrio = False
+                        break
+                
+                # Verificar si la estrategia_B es la mejor respuesta a estrategia_A y estrategia_C
+                for alt_B in range(3):
+                    if matriz_costos[estrategia_A][alt_B][estrategia_C][1] >= matriz_costos[estrategia_A][estrategia_B][estrategia_C][1]:
+                        es_equilibrio = False
+                        break
+                
+                # Verificar si la estrategia_C es la mejor respuesta a estrategia_A y estrategia_B
+                for alt_C in range(3):
+                    if matriz_costos[estrategia_A][estrategia_B][alt_C][2] >= matriz_costos[estrategia_A][estrategia_B][estrategia_C][2]:
+                        es_equilibrio = False
+                        break
+                
+                if es_equilibrio:
+                    equilibrios_nash.append((estrategia_A, estrategia_B, estrategia_C))
+                    
+    # Mostrar los equilibrios de Nash encontrados
+    if equilibrios_nash:
+        print(f"Se han encontrado los siguientes equilibrios de Nash: {equilibrios_nash}")
+    else:
+        print("No se han encontrado equilibrios de Nash.")
+
+def encontrar_equilibrio_nash_debil():
+    equilibrios_nash = []
+    
+    for estrategia_A in range(3):
+        for estrategia_B in range(3):
+            for estrategia_C in range(3):
+                es_equilibrio = True
+                
+                for alt_A in range(3):
+                    if matriz_costos[alt_A][estrategia_B][estrategia_C][0] > matriz_costos[estrategia_A][estrategia_B][estrategia_C][0]:
+                        es_equilibrio = False
+                        break
+                
+                for alt_B in range(3):
+                    if matriz_costos[estrategia_A][alt_B][estrategia_C][1] > matriz_costos[estrategia_A][estrategia_B][estrategia_C][1]:
+                        es_equilibrio = False
+                        break
+                
+                for alt_C in range(3):
+                    if matriz_costos[estrategia_A][estrategia_B][alt_C][2] > matriz_costos[estrategia_A][estrategia_B][estrategia_C][2]:
+                        es_equilibrio = False
+                        break
+                
+                if es_equilibrio:
+                    equilibrios_nash.append((estrategia_A, estrategia_B, estrategia_C))
+                    
+    if equilibrios_nash:
+        print(f"Se han encontrado los siguientes equilibrios de Nash débiles: {equilibrios_nash}")
+    else:
+        print("No se han encontrado equilibrios de Nash débiles.")
+
+encontrar_equilibrio_nash()
+encontrar_equilibrio_nash_debil()
+
+print("----- MEJORES ESTRATEGIAS -----")
+
+mejores_estrategias_A = [[0 for _ in range(3)] for _ in range(3)]
+mejores_estrategias_B = [[0 for _ in range(3)] for _ in range(3)]
+mejores_estrategias_C = [[0 for _ in range(3)] for _ in range(3)]
+
+def mejor_respuesta_A(estrategia_B, estrategia_C):
+    mejor_pago = matriz_costos[0][estrategia_B][estrategia_C][0]
+    mejor_estrategia_A = 0
+   
+    for estrategia_A in range(3):
+        pago_actual = matriz_costos[estrategia_A][estrategia_B][estrategia_C][0]
+       
+        if pago_actual > mejor_pago:
+            mejor_pago = pago_actual
+            mejor_estrategia_A = estrategia_A
+
+    mejores_estrategias_A[estrategia_B][estrategia_C] = mejor_estrategia_A
+     
+    return mejor_estrategia_A
+
+def mejor_respuesta_B(estrategia_A, estrategia_C):
+    mejor_pago = matriz_costos[estrategia_A][0][estrategia_C][1]
+    mejor_estrategia_B = 0
+   
+    for estrategia_B in range(3):
+        pago_actual = matriz_costos[estrategia_A][estrategia_B][estrategia_C][1]
+       
+        if pago_actual > mejor_pago:
+            mejor_pago = pago_actual
+            mejor_estrategia_B = estrategia_B
+
+    mejores_estrategias_B[estrategia_A][estrategia_C] = mejor_estrategia_B
+
+    return mejor_estrategia_B
+
+def mejor_respuesta_C(estrategia_A, estrategia_B):
+    mejor_pago = matriz_costos[estrategia_A][estrategia_B][0][2]
+    mejor_estrategia_C = 0
+   
+    for estrategia_C in range(3):
+        pago_actual = matriz_costos[estrategia_A][estrategia_B][estrategia_C][2]
+       
+        if pago_actual > mejor_pago:
+            mejor_pago = pago_actual
+            mejor_estrategia_C = estrategia_C
+           
+    mejores_estrategias_C[estrategia_A][estrategia_B] = mejor_estrategia_C
+     
+    return mejor_estrategia_C
+
+def cargar_mejores_respuestas():
+    for estrategia_A in range(3):
+        for estrategia_B in range(3):
+            for estrategia_C in range(3):
+                mejor_respuesta_A(estrategia_B, estrategia_C)
+                mejor_respuesta_B(estrategia_A, estrategia_C) 
+                mejor_respuesta_C(estrategia_A, estrategia_B)  
+
+
+cargar_mejores_respuestas()
+
+print("Mejores estrategias de A")
+print(mejores_estrategias_A)
+
+
+print("Mejores estrategias de B")
+print(mejores_estrategias_B)
+
+print("Mejores estrategias de C")
+print(mejores_estrategias_C)
