@@ -5,6 +5,7 @@ import csv
 jugadores = 3
 
 matriz_costos = [[[0 for _ in range(jugadores)] for _ in range(jugadores)] for _ in range(jugadores)]
+nombres_estrategias = ["Vuelo de 1 escala", "Vuelo de 2 escalas", "Vuelo directo"]
 
 for matriz in range(3):
     nombre_archivo = "tabla" + str(matriz)
@@ -46,16 +47,16 @@ def calc_est_dominante_A():
         debilmente_dominada = es_debilmente_dominada_en_A(estrategia)
 
         if dominante:
-            print("La estrategia {} es dominante para el jugador A".format(estrategia))
+            print("La estrategia {} es dominante para el jugador A".format(nombres_estrategias[estrategia]))
         
         if debilmente_dominante:
-            print("La estrategia {} es debilmente dominante para el jugador A".format(estrategia))
+            print("La estrategia {} es debilmente dominante para el jugador A".format(nombres_estrategias[estrategia]))
         
         if dominada:
-            print("La estrategia {} es dominada por las demás para el jugador A".format(estrategia))
+            print("La estrategia {} es dominada por las demás para el jugador A".format(nombres_estrategias[estrategia]))
         
         if debilmente_dominada:
-            print("La estrategia {} es debilmente dominada por las demás para el jugador A".format(estrategia))
+            print("La estrategia {} es debilmente dominada por las demás para el jugador A".format(nombres_estrategias[estrategia]))
         
         hubo_alguna = hubo_alguna or dominante or debilmente_dominante
     
@@ -134,16 +135,16 @@ def calc_est_dominante_B():
         debilmente_dominada = es_debilmente_dominada_en_B(estrategia)
 
         if dominante:
-            print("La estrategia {} es dominante para el jugador B".format(estrategia))
+            print("La estrategia {} es dominante para el jugador B".format(nombres_estrategias[estrategia]))
         
         if debilmente_dominante:
-            print("La estrategia {} es debilmente dominante para el jugador B".format(estrategia))
+            print("La estrategia {} es debilmente dominante para el jugador B".format(nombres_estrategias[estrategia]))
 
         if dominada:
-            print("La estrategia {} es dominada por las demás para el jugador B".format(estrategia))
+            print("La estrategia {} es dominada por las demás para el jugador B".format(nombres_estrategias[estrategia]))
         
         if debilmente_dominada:
-            print("La estrategia {} es debilmente dominada por las demás para el jugador B".format(estrategia))
+            print("La estrategia {} es debilmente dominada por las demás para el jugador B".format(nombres_estrategias[estrategia]))
 
         hubo_alguna = hubo_alguna or dominante or debilmente_dominante
     
@@ -222,16 +223,16 @@ def calc_est_dominante_C():
         debilmente_dominada = es_debilmente_dominada_en_C(estrategia)
 
         if dominante:
-            print("La estrategia {} es dominante para el jugador C".format(estrategia))
+            print("La estrategia {} es dominante para el jugador C".format(nombres_estrategias[estrategia]))
         
         if debilmente_dominante:
-            print("La estrategia {} es debilmente dominante para el jugador C".format(estrategia))
+            print("La estrategia {} es debilmente dominante para el jugador C".format(nombres_estrategias[estrategia]))
         
         if dominada:
-            print("La estrategia {} es dominada por las demás para el jugador C".format(estrategia))
+            print("La estrategia {} es dominada por las demás para el jugador C".format(nombres_estrategias[estrategia]))
         
         if debilmente_dominada:
-            print("La estrategia {} es debilmente dominada por las demás para el jugador C".format(estrategia))
+            print("La estrategia {} es debilmente dominada por las demás para el jugador C".format(nombres_estrategias[estrategia]))
         
         hubo_alguna = hubo_alguna or dominante or debilmente_dominante
     
@@ -299,15 +300,15 @@ def es_debilmente_dominada_en_C(estrategia):
 
 # Programa principal
 
-print("Calculando estrategias dominantes: ")
+print("----- Calculando estrategias dominantes: -----")
 
-print("JUGADOR A (ARGENTINO)")
+print("----- JUGADOR A (ARGENTINO) -----")
 calc_est_dominante_A()
 
-print("JUGADOR B (MEXICANO)")
+print("----- JUGADOR B (MEXICANO) -----")
 calc_est_dominante_B()
 
-print("JUGADOR C (ESPAÑOL)")
+print("----- JUGADOR C (ESPAÑOL) -----")
 calc_est_dominante_C()
 
 def encontrar_equilibrio_nash():
@@ -338,7 +339,8 @@ def encontrar_equilibrio_nash():
                     equilibrios_nash.append((estrategia_A, estrategia_B, estrategia_C))
                     
     if equilibrios_nash:
-        print(f"Se han encontrado los siguientes equilibrios de Nash: {equilibrios_nash}")
+        nombre_equilibrio = tuple(map(lambda x: nombres_estrategias[x], list(equilibrios_nash[0])))
+        print(f"Se han encontrado los siguientes equilibrios de Nash: {nombre_equilibrio}")
     else:
         print("No se han encontrado equilibrios de Nash.")
 
@@ -369,7 +371,8 @@ def encontrar_equilibrio_nash_debil():
                     equilibrios_nash.append((estrategia_A, estrategia_B, estrategia_C))
                     
     if equilibrios_nash:
-        print(f"Se han encontrado los siguientes equilibrios de Nash débiles: {equilibrios_nash}")
+        nombre_equilibrio = tuple(map(lambda x: nombres_estrategias[x], list(equilibrios_nash[0])))
+        print(f"Se han encontrado los siguientes equilibrios de Nash: {nombre_equilibrio}")
     else:
         print("No se han encontrado equilibrios de Nash débiles.")
 
@@ -435,14 +438,16 @@ def cargar_mejores_respuestas():
                 mejor_respuesta_B(estrategia_A, estrategia_C) 
                 mejor_respuesta_C(estrategia_A, estrategia_B)  
 
+def print_mejores_estrategias_con_nombre(mej_est):
+    print(list(map(lambda x: list(map(lambda y: nombres_estrategias[y], x)), list(mej_est))))
 
 cargar_mejores_respuestas()
 
 print("Mejores estrategias de A")
-print(mejores_estrategias_A)
+print_mejores_estrategias_con_nombre(mejores_estrategias_A)
 
 print("Mejores estrategias de B")
-print(mejores_estrategias_B)
+print_mejores_estrategias_con_nombre(mejores_estrategias_B)
 
 print("Mejores estrategias de C")
-print(mejores_estrategias_C)
+print_mejores_estrategias_con_nombre(mejores_estrategias_C)
